@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; opacity: .55; }
+  .card {
+    position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    background: #1C0A57; color: #FFD744; border: 4px solid #FFD744;
+    font: bold 40px/1.2 monospace; letter-spacing: .12em; padding: 24px 40px; text-align: center;
+  }
+  .card small { display: block; margin-top: 12px; font-size: 16px; color: #B9A8FF; letter-spacing: .08em; }
+</style>
+</head>
+<body>
+<canvas id="snow" width="320" height="180"></canvas>
+<div class="card">NO SIGNAL<small>RETUNING&hellip; PRESS BACK TO EXIT</small></div>
+<script>
+  // Classic analog snow.
+  var c = document.getElementById('snow'), g = c.getContext('2d');
+  var img = g.createImageData(c.width, c.height);
+  (function frame() {
+    var d = img.data;
+    for (var i = 0; i < d.length; i += 4) {
+      var v = Math.random() * 255 | 0;
+      d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255;
+    }
+    g.putImageData(img, 0, 0);
+    requestAnimationFrame(frame);
+  })();
+
+  // Try the channel again every 10s, or right away if the network comes back.
+  function retune() { location.replace('https://spelunkr.tv/'); }
+  setTimeout(retune, 10000);
+  window.addEventListener('online', retune);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Enter') retune(); });
+</script>
+</body>
+</html>
