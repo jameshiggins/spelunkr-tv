@@ -32,7 +32,7 @@
   })();
 
   // Try the channel again every 10s, or right away if the network comes back.
-  function retune() { location.replace('https://spelunkr.tv/'); }
+  function retune() { location.replace('https://spelunkr.tv/?tv'); }
   setTimeout(retune, 10000);
   window.addEventListener('online', retune);
   document.addEventListener('keydown', function (e) { if (e.key === 'Enter') retune(); });
